@@ -1,5 +1,7 @@
 package ru.job4j.articles.model;
 
+import java.lang.ref.PhantomReference;
+
 public class Article {
 
     private int id;
@@ -9,6 +11,11 @@ public class Article {
     public Article(int id, String text) {
         this.id = id;
         this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 
     public Article(String text) {

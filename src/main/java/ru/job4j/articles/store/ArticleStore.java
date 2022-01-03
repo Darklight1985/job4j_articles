@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.articles.model.Article;
 
+import java.lang.ref.ReferenceQueue;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class ArticleStore implements Store<Article>, AutoCloseable {
+    private ReferenceQueue<Article> queue = new ReferenceQueue<>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleStore.class.getSimpleName());
 
@@ -90,6 +92,8 @@ public class ArticleStore implements Store<Article>, AutoCloseable {
         }
         return articles;
     }
+
+
 
     @Override
     public void close() throws Exception {
