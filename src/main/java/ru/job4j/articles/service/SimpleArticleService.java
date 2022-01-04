@@ -32,12 +32,14 @@ public class SimpleArticleService implements ArticleService {
     public void generate(Store<Word> wordStore, int count, Store<Article> articleStore) {
         LOGGER.info("Генерация статей в количестве {}", count);
         var words = wordStore.findAll();
+        List<Article> list = new ArrayList<>();
         for (int i = 0; i < count; i++) {
                 LOGGER.info("Сгенерирована статья № {}", i);
-               articleStore.save(articleGenerator.generate(words));
-               if (i % 10000 == 0) {
-                   System.gc();
-               }
+                list.add(articleGenerator.generate(words));
+                if (i % 50000 == 0) {
+                    list.forEach(articleStore::save);
+                    list.clear();
+                }
         }
     }
 }
