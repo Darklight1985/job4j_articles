@@ -12,6 +12,7 @@ import java.awt.*;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -20,7 +21,6 @@ import java.util.Queue;
 public class SimpleArticleService implements ArticleService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleArticleService.class.getSimpleName());
-    private static List<Article> queue;
 
     private final ArticleGenerator articleGenerator;
 
@@ -32,21 +32,12 @@ public class SimpleArticleService implements ArticleService {
     public void generate(Store<Word> wordStore, int count, Store<Article> articleStore) {
         LOGGER.info("Генерация статей в количестве {}", count);
         var words = wordStore.findAll();
-        List<Article> articles = new ArrayList<>();
         for (int i = 0; i < count; i++) {
                 LOGGER.info("Сгенерирована статья № {}", i);
-               articles.add(articleGenerator.generate(words));
-   if (i % 10000 == 0) {
-       articles.forEach(articleStore::save);
-       articles.clear();
-   }
+               articleStore.save(articleGenerator.generate(words));
+               if (i % 10000 == 0) {
+                   System.gc();
+               }
         }
-
-        /**     var articles = IntStream.iterate(0, i -> i < count, i -> i + 1)
-                .peek(i -> LOGGER.info("Сгенерирована статья № {}", i))
-                .mapToObj((x) -> articleGenerator.generate(words))
-                .collect(Collectors.toList());
-        articles.forEach(articleStore::save);
-    */
     }
 }

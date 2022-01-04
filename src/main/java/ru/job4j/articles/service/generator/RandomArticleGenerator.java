@@ -12,15 +12,11 @@ import java.util.stream.Collectors;
 public class RandomArticleGenerator implements ArticleGenerator {
     @Override
     public Article generate(List<Word> words) {
-        Article rsl;
-        WeakReference<List<Word>> wordsCopy = new WeakReference<>(words);
-        Collections.shuffle(wordsCopy.get());
-        var content = wordsCopy.get()
+        Collections.shuffle(words);
+        var content = words
                 .stream()
                 .map(Word::getValue)
                 .collect(Collectors.joining(" "));
-        rsl = new Article(content);
-        content = null;
-        return rsl;
+        return new Article(content);
     }
 }

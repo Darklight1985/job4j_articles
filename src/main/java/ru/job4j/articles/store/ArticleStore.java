@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Properties;
 
 public class ArticleStore implements Store<Article>, AutoCloseable {
-    private ReferenceQueue<Article> queue = new ReferenceQueue<>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleStore.class.getSimpleName());
 
@@ -72,6 +71,8 @@ public class ArticleStore implements Store<Article>, AutoCloseable {
         }
         return model;
     }
+
+
 
     @Override
     public List<Article> findAll() {

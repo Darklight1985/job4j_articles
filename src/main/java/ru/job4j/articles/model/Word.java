@@ -8,7 +8,7 @@ public class Word {
 
     public Word(int id, String value) {
         this.id = id;
-        this.value = value;
+        this.value = value.intern();
     }
 
     public int getId() {

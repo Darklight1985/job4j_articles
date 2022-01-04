@@ -14,6 +14,12 @@ public class Article {
     }
 
     @Override
+    protected void finalize() throws Throwable {
+        System.out.println("Removed");
+        super.finalize();
+    }
+
+    @Override
     public String toString() {
         return super.toString();
     }
